@@ -1,2 +1,2 @@
-pymobiledevice3>=4.11.20,<5.0.0
+git+https://github.com/jawshoeadan/pymobiledevice3#egg=pymobiledevice3
 zeroconf==0.132.2

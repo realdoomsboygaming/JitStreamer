@@ -88,6 +88,7 @@ class Device:
         s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
         logging.info(f"Connecting to [{host}]:{port}")
         s.connect(debugserver)
+        print(self.handle)
 
         s.sendall(b'$QStartNoAckMode#b0')
         logging.info(f"StartNoAckMode: {s.recv(4).decode()}")
@@ -169,7 +170,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self._send_json_response(status_code, response)
             
 def start_tunneld_proc():
-    TunneldRunner.create(TUNNELD_DEFAULT_ADDRESS[0], TUNNELD_DEFAULT_ADDRESS[1],
+    TunneldRunner.create("0.0.0.0", TUNNELD_DEFAULT_ADDRESS[1],
                          protocol=TunnelProtocol('quic'), mobdev2_monitor=True, usb_monitor=True, wifi_monitor=True, usbmux_monitor=True)
 
 def prompt_device_list(device_list: list):
