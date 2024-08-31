@@ -1,5 +1,6 @@
 import atexit
 import asyncio
+import os
 import click
 import socket
 import logging
@@ -20,6 +21,7 @@ from pymobiledevice3.services.mobile_image_mounter import auto_mount_personalize
 from pymobiledevice3.services.dvt.instruments.process_control import ProcessControl
 from pymobiledevice3.services.dvt.dvt_secure_socket_proxy import DvtSecureSocketProxyService
 from pymobiledevice3.tunneld import get_tunneld_devices, TUNNELD_DEFAULT_ADDRESS, TunneldRunner
+from pymobiledevice3.common import get_home_folder
 
 from pymobiledevice3._version import __version__ as pymd_ver
 from SideJITServer._version import __version__
@@ -168,7 +170,24 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 response = {"ERROR": "Invalid path or could not find device!"}
 
         self._send_json_response(status_code, response)
-            
+    def do_POST(self):
+        parsed_path = urlparse(self.path)
+        path_parts = parsed_path.path.strip('/').split('/')
+
+ 
+        if path_parts == ['add-pairing']:
+            try:
+                data = self.rfile.read(int(self.headers['content-length'])).decode()
+                post_data = parse_qs(data)
+                pairing_record = post_data.get('pair_record', [''])[0]
+                home_folder = get_home_folder()
+                udid = post_data.get('udid', [''])[0]
+                with open(os.path.join(home_folder, f"{udid}.plist"), 'w') as f:
+                    f.write(pairing_record)
+                print(f"Wrote pairing record for {udid}: {pairing_record}")
+                self._send_json_response(200, {"OK": f"Wrote pairing file for device {udid}!"})
+            except Exception as e:
+                print(e)
 def start_tunneld_proc():
     TunneldRunner.create("0.0.0.0", TUNNELD_DEFAULT_ADDRESS[1],
                          protocol=TunnelProtocol('quic'), mobdev2_monitor=True, usb_monitor=True, wifi_monitor=True, usbmux_monitor=True)
