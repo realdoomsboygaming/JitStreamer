@@ -204,7 +204,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header('Content-type', 'text/plain')
                     self.end_headers()
-                    response = f"File '{fn}' and UDID '{udid}' received successfully"
+                    response = f"File '{udid}'.plist received successfully"
                     self.wfile.write(response.encode())
                 else:
                     # If the file field was empty
