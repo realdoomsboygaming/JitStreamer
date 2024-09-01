@@ -1,5 +1,6 @@
 import atexit
 import asyncio
+import cgi
 import os
 import click
 import socket
@@ -171,23 +172,61 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         self._send_json_response(status_code, response)
     def do_POST(self):
+        
         parsed_path = urlparse(self.path)
         path_parts = parsed_path.path.strip('/').split('/')
 
  
         if path_parts == ['add-pairing']:
-            try:
-                data = self.rfile.read(int(self.headers['content-length'])).decode()
-                post_data = parse_qs(data)
-                pairing_record = post_data.get('pair_record', [''])[0]
-                home_folder = get_home_folder()
-                udid = post_data.get('udid', [''])[0]
-                with open(os.path.join(home_folder, f"{udid}.plist"), 'w') as f:
-                    f.write(pairing_record)
-                print(f"Wrote pairing record for {udid}: {pairing_record}")
-                self._send_json_response(200, {"OK": f"Wrote pairing file for device {udid}!"})
-            except Exception as e:
-                print(e)
+            print("Got pairing request!")
+            
+            # Parse the form data
+            form = cgi.FieldStorage(
+                fp=self.rfile,
+                headers=self.headers,
+                environ={'REQUEST_METHOD': 'POST',
+                         'CONTENT_TYPE': self.headers['Content-Type'],
+                         })
+            
+            # Get the file and udid from the form data
+            if 'pair_record' in form and 'udid' in form:
+                fileitem = form['pair_record']
+                udid = form['udid'].value
+                
+                if fileitem.filename:
+                    fn = os.path.basename(fileitem.filename)
+                    file_content = fileitem.file.read()
+                    
+                    home_folder = get_home_folder()
+                    with open(os.path.join(home_folder, f"{udid}.plist"), 'wb') as f:
+                        f.write(file_content) 
+                    
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/plain')
+                    self.end_headers()
+                    response = f"File '{fn}' and UDID '{udid}' received successfully"
+                    self.wfile.write(response.encode())
+                else:
+                    # If the file field was empty
+                    self.send_error(400, "No file was uploaded")
+            else:
+                # If either 'pair_record' or 'udid' is missing
+                self.send_error(400, "Missing required form fields")
+
+        #     try:
+        #         data = self.rfile.read(int(self.headers['content-length'])).decode()
+        #         post_data = parse_qs(data)
+        #         form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD':'POST'})
+        #         pairing_record_file = form['pair_record']
+        #         pairing_record = pairing_record_file.file.read().decode()
+        #         home_folder = get_home_folder()
+        #         udid = form['udid']
+        #         with open(os.path.join(home_folder, f"{udid}.plist"), 'w') as f:
+        #             f.write(pairing_record)
+        #         print(f"Wrote pairing record for {udid}: {pairing_record}")
+        #         self._send_json_response(200, {"OK": f"Wrote pairing file for device {udid}!"})
+        #     except Exception as e:
+        #         print(e)
 def start_tunneld_proc():
     TunneldRunner.create("0.0.0.0", TUNNELD_DEFAULT_ADDRESS[1],
                          protocol=TunnelProtocol('quic'), mobdev2_monitor=True, usb_monitor=True, wifi_monitor=True, usbmux_monitor=True)
