@@ -1,14 +1,12 @@
 [project]
-name = "SideJITServer"
+name = "JitStreamer"
 authors = [
-  { name="nythepegasus", email="me@nythepegas.us" },
-  { name="khanhduytran0" },
-  { name="JoeMatt", email="git@joemattiello.com" },
+    { name = "nythepegasus", email = "me@nythepegas.us" },
+    { name = "khanhduytran0" },
+    { name = "JoeMatt", email = "git@joemattiello.com" },
 ]
-maintainers = [
-  { name="nythepegasus", email="me@nythepegas.us" },
-]
-description = "SideJITServer is an iOS 17 JIT enabler for Windows/macOS!"
+maintainers = [{ name = "nythepegasus", email = "me@nythepegas.us" }]
+description = "JitStreamer is an iOS 17 JIT enabler for Windows/macOS!"
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = ["ios", "automation", "cli", "jit"]
@@ -36,17 +34,17 @@ dev = ["build", "pylint"]
 "Bug Reports" = "https://github.com/nythepegasus/SideJITServer/issues"
 
 [project.scripts]
-SideJITServer = "SideJITServer.__main__:start_server"
+JitStreamer = "JitStreamer.__main__:start_server"
 
 [tool.setuptools]
-package-data = { "SideJITServer" = [] }
+package-data = { "JitStreamer" = [] }
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }
-version = {attr = "SideJITServer._version.__version__"}
+version = { attr = "JitStreamer._version.__version__" }
 
 [tool.setuptools_scm]
-version_file = "SideJITServer/_version.py"
+version_file = "JitStreamer/_version.py"
 
 [build-system]
 requires = ["setuptools>=43.0.0", "setuptools_scm>=8", "wheel"]
