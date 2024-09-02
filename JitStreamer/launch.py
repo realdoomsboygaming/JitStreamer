@@ -21,7 +21,7 @@
 
 # nuitka-project: --report=compilation-report.xml
 
-from SideJITServer import start_server
+from JitStreamer import start_server
 
 if __name__ == '__main__':
     start_server()

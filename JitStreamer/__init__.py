@@ -25,7 +25,7 @@ from pymobiledevice3.tunneld import get_tunneld_devices, TUNNELD_DEFAULT_ADDRESS
 from pymobiledevice3.common import get_home_folder
 
 from pymobiledevice3._version import __version__ as pymd_ver
-from SideJITServer._version import __version__
+from JitStreamer._version import __version__
 
 
 
