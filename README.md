@@ -1,6 +1,6 @@
-# SideJITServer Installation Guide
+# JitStreamer Installation Guide
 
-This guide will walk you through the process of installing and running SideJITServer on your host computer and iPhone.
+This guide will walk you through the process of installing and running JitStreamer on your host computer and iPhone.
 
 # Computer Setup
 
@@ -14,8 +14,8 @@ This guide will walk you through the process of installing and running SideJITSe
 
 1. Install Tailscale on both your host computer and iPhone
 2. Create and activate a Python virtual environment
-3. Install SideJITServer
-4. Run SideJITServer
+3. Install JitStreamer
+4. Run JitStreamer
 
 ### Linux/macOS Instructions
 
@@ -31,15 +31,15 @@ This guide will walk you through the process of installing and running SideJITSe
     source sidejit_env/bin/activate
     ```
 
-3. Install SideJITServer
+3. Install JitStreamer
 
     ```
-    pip install git+https://github.com/jawshoeadan/SideJITServer#egg=SideJITServer
+    pip install git+https://github.com/jawshoeadan/JitStreamer#egg=JitStreamer
     ```
 
-4. Run SideJITServer
+4. Run JitStreamer
     ```
-    sudo SideJITServer
+    sudo JitStreamer
     ```
 
 ### Windows Instructions
@@ -56,16 +56,16 @@ This guide will walk you through the process of installing and running SideJITSe
     sidejit_env\Scripts\activate
     ```
 
-3. Install SideJITServer
+3. Install JitStreamer
 
     ```
-    pip install git+https://github.com/jawshoeadan/SideJITServer#egg=SideJITServer
+    pip install git+https://github.com/jawshoeadan/JitStreamer#egg=JitStreamer
     ```
 
-4. Run SideJITServer (as administrator)
+4. Run JitStreamer (as administrator)
     - Open Command Prompt as administrator
     ```
-    SideJITServer
+    JitStreamer
     ```
 
 ## Phone Setup
@@ -83,9 +83,9 @@ This guide will walk you through the process of installing and running SideJITSe
 
 ## Troubleshooting
 
-If you encounter any issues during the installation or running of SideJITServer, please check the following:
+If you encounter any issues during the installation or running of JitStreamer, please check the following:
 
 1. Ensure Tailscale is properly installed and connected on both your host computer and iPhone.
 2. Verify that you're using the correct version of Python (3.6 or higher).
-3. Make sure your virtual environment is activated before installing and running SideJITServer.
-4. If you get a "command not found" error, try using the full path to the SideJITServer executable.
+3. Make sure your virtual environment is activated before installing and running JitStreamer.
+4. If you get a "command not found" error, try using the full path to the JitStreamer executable.
