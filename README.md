@@ -86,6 +86,6 @@ This guide will walk you through the process of installing and running JitStream
 If you encounter any issues during the installation or running of JitStreamer, please check the following:
 
 1. Ensure Tailscale is properly installed and connected on both your host computer and iPhone.
-2. Verify that you're using the correct version of Python (3.6 or higher).
+2. Verify that you're using the correct version of Python (3.10 or higher).
 3. Make sure your virtual environment is activated before installing and running JitStreamer.
 4. If you get a "command not found" error, try using the full path to the JitStreamer executable.
