@@ -79,8 +79,10 @@ This guide will walk you through the process of installing and running JitStream
 2. Configure Tailscale
     - Open the Tailscale app
     - Follow the in-app instructions to connect to your Tailscale network
+
 3. Install [this shortcut](https://www.icloud.com/shortcuts/ed312725980f4bbfab7e6fe939a470df) and follow the setup questions. After you connect both of your devices to Tailscale, you can view each device's IP address from the dashboard. Use the same pairing file you used to setup SideStore. If you don't know the UDID of your device, it is typically the file name of your pairing file
-4. To enable JIT on apps, go into the SideStore settings -> SideJitServer and manually set the server IP to be the IP of your server, include http:// and :8080 at the end
+4. Before you can enable JIT, you have to run the shortcut, first clicking "Start Tunnel", then again clicking "refresh devices".
+5. To enable JIT on apps, go into the SideStore settings -> SideJitServer and manually set the server IP to be the IP of your server, include http:// and :8080 at the end
 
 ## Troubleshooting
 
@@ -90,3 +92,5 @@ If you encounter any issues during the installation or running of JitStreamer, p
 2. Verify that you're using the correct version of Python (3.10 or higher).
 3. Make sure your virtual environment is activated before installing and running JitStreamer.
 4. If you get a "command not found" error, try using the full path to the JitStreamer executable.
+5. In a web browser open http://server-ip:8080/ and you should see your device. If you don't, try running the shortcut with "refresh devices"
+6. Try running clear tunnels then start tunnel again
