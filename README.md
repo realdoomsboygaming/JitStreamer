@@ -1,71 +1,95 @@
-# SideJITServer
-This project allows you to start a server that wirelessly or via USB gives you JIT for iOS 17+ on Windows/macOS/Linux if you use the correct newer pymobiledevice3 version.
+# SideJITServer Installation Guide
 
-## How to get this running (Run with Administrator!)
+This guide will walk you through the process of installing and running SideJITServer on your host computer and iPhone.
 
-### Option 1: Python install
-```
-python3 -m venv venv # Run inside SideJITServer directory!
+# Computer Setup
 
-# Activate Python venv
+## Prerequisites
 
-# macOS
-. ./venv/bin/activate
+-   Python 3.6 or higher
+-   Git
+-   Tailscale account
 
-# Windows but using Powershell
-.\venv\Scripts\Activate.ps1
+## General Steps
 
-# Windows but using Command Prompt/CMD
-.\venv\Scripts\Activate.bat
+1. Install Tailscale on both your host computer and iPhone
+2. Create and activate a Python virtual environment
+3. Install SideJITServer
+4. Run SideJITServer
 
-# Now let's install all the required packages! (Make sure you're still inside venv!)
-# All OS
-pip3 install -r requirements.txt
-pip3 install SideJITServer
-# If you got an error saying pip3 not found just change pip3 to pip
+Here's the documentation for your project with the requested structure:
 
-# Let's see if everything works (Make sure you're still inside venv!)
-SideJITServer --version
-# Output should show SideJITServer!
-```
+### Linux/macOS Instructions
 
-Or use PyPI
-```
-python3 -m venv venv
-# Activate venv..
+1. Install Tailscale
 
-pip3 install SideJITServer
-SideJITServer --help
-```
+    - Visit the [Tailscale download page](https://tailscale.com/download)
+    - Follow the instructions for your specific Linux distribution or macOS
 
-### Option 2: Direct download (if available)
-Go to the latest [GitHub Release](https://github.com/nythepegasus/SideJITServer/releases/latest) and check if there are executable downloads, such as `SideJITServer-windows-x86_64.exe`, depending on your OS and your architecture.
+2. Create and activate a virtual environment
 
-Download the correct executable, and run it as Administrator from your terminal or Powershell following the directions below. If you are on Mac or Linux, you must first run `chmod +x ./(your downloaded .bin file)` before executing the file with sudo.
+    ```
+    python3 -m venv sidejit_env
+    source sidejit_env/bin/activate
+    ```
 
-Python is not necessary for this approach.
+3. Install SideJITServer
 
+    ```
+    pip install git+https://github.com/jawshoeadan/SideJITServer#egg=SideJITServer
+    ```
 
-# How to use SideJITServer?
-- Make sure your device is connected!
-- Make sure you're still inside the venv, if applicable!
-- Common Knowledge
-  
-Now run `SideJITServer --pair` and on your PC make sure you click on Trust this PC!
-Also it will show you a prompt to continue just type "y"
+4. Run SideJITServer
+    ```
+    sudo SideJITServer
+    ```
 
-Now thats done, Install [this](https://www.icloud.com/shortcuts/b0ffc9c3f0e74e7a8f8052c89fa322cf) shortcut
+### Windows Instructions
 
-After that its gonna ask you to put on your device's UDID, Go to your PC and see your local ipaddress mine is `192.168.0.6:8080` and on your phone go to that (your local address) and copy the one that beside usbmux (example : 00001111-000A1100A11101A)
+1. Install Tailscale
 
-Now it's gonna ask you for SideJIT Server address! Just type in the address you use earlier to access device's UDID
+    - Visit the [Tailscale download page](https://tailscale.com/download)
+    - Download and run the Windows installer
 
-for example : `http://192.168.0.6:8080` (You must include the http and not include / at the end!)
+2. Create and activate a virtual environment
 
-Now run the shortcut!
+    ```
+    python -m venv sidejit_env
+    sidejit_env\Scripts\activate
+    ```
 
-It gonna ask you to allow to access your local ip address just click allow!
+3. Install SideJITServer
 
-Now select the application that you want to give JIT access to and you're done! (might ask for notification. It is recommended that you allow so you see if the JIT fail or succeed)
+    ```
+    pip install git+https://github.com/jawshoeadan/SideJITServer#egg=SideJITServer
+    ```
 
-Happy JITing! :3
+4. Run SideJITServer (as administrator)
+    - Open Command Prompt as administrator
+    ```
+    SideJITServer
+    ```
+
+## Phone Setup
+
+1. Install Tailscale on your iPhone
+
+    - Open the App Store on your iPhone
+    - Search for "Tailscale"
+    - Download and install the Tailscale app
+
+2. Configure Tailscale
+    - Open the Tailscale app
+    - Follow the in-app instructions to connect to your Tailscale network
+3. Install [this shortcut](https://www.icloud.com/shortcuts/ed312725980f4bbfab7e6fe939a470df) and follow the setup questions. After you connect both of your devices to Tailscale, you can view each device's IP address from the dashboard. Use the same pairing file you used to setup SideStore. If you don't know the UDID of your device, it is typically the file name of your pairing file
+
+## Troubleshooting
+
+If you encounter any issues during the installation or running of SideJITServer, please check the following:
+
+1. Ensure Tailscale is properly installed and connected on both your host computer and iPhone.
+2. Verify that you're using the correct version of Python (3.6 or higher).
+3. Make sure your virtual environment is activated before installing and running SideJITServer.
+4. If you get a "command not found" error, try using the full path to the SideJITServer executable.
+
+For further assistance, please refer to the project's GitHub repository or reach out to the project maintainers.
