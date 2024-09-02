@@ -17,8 +17,6 @@ This guide will walk you through the process of installing and running SideJITSe
 3. Install SideJITServer
 4. Run SideJITServer
 
-Here's the documentation for your project with the requested structure:
-
 ### Linux/macOS Instructions
 
 1. Install Tailscale
@@ -91,5 +89,3 @@ If you encounter any issues during the installation or running of SideJITServer,
 2. Verify that you're using the correct version of Python (3.6 or higher).
 3. Make sure your virtual environment is activated before installing and running SideJITServer.
 4. If you get a "command not found" error, try using the full path to the SideJITServer executable.
-
-For further assistance, please refer to the project's GitHub repository or reach out to the project maintainers.
