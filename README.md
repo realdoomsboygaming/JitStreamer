@@ -80,6 +80,7 @@ This guide will walk you through the process of installing and running JitStream
     - Open the Tailscale app
     - Follow the in-app instructions to connect to your Tailscale network
 3. Install [this shortcut](https://www.icloud.com/shortcuts/ed312725980f4bbfab7e6fe939a470df) and follow the setup questions. After you connect both of your devices to Tailscale, you can view each device's IP address from the dashboard. Use the same pairing file you used to setup SideStore. If you don't know the UDID of your device, it is typically the file name of your pairing file
+4. To enable JIT on apps, go into the SideStore settings -> SideJitServer and manually set the server IP to be the IP of your server, include http:// and :8080 at the end
 
 ## Troubleshooting
 
