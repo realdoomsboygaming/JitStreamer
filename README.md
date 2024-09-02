@@ -27,8 +27,8 @@ This guide will walk you through the process of installing and running JitStream
 2. Create and activate a virtual environment
 
     ```
-    python3 -m venv sidejit_env
-    source sidejit_env/bin/activate
+    python3 -m venv jitstreamer_env
+    source jitstreamer_env/bin/activate
     ```
 
 3. Install JitStreamer
@@ -52,8 +52,8 @@ This guide will walk you through the process of installing and running JitStream
 2. Create and activate a virtual environment
 
     ```
-    python -m venv sidejit_env
-    sidejit_env\Scripts\activate
+    python -m venv jitstreamer_env
+    jitstreamer_env\Scripts\activate
     ```
 
 3. Install JitStreamer
