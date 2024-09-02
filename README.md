@@ -6,7 +6,7 @@ This guide will walk you through the process of installing and running JitStream
 
 ## Prerequisites
 
--   Python 3.6 or higher
+-   Python 3.10 or higher
 -   Git
 -   Tailscale account
 
