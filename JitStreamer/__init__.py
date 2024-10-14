@@ -198,8 +198,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     file_content = fileitem.file.read()
                     
                     home_folder = get_home_folder()
-                    with open(os.path.join(home_folder, f"{udid}.plist"), 'wb') as f:
-                        f.write(file_content) 
+                    if udid != '':
+                        with open(os.path.join(home_folder, f"{udid}.plist"), 'wb') as f:
+                            f.write(file_content) 
                     
                     self.send_response(200)
                     self.send_header('Content-type', 'text/plain')
