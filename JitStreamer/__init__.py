@@ -12,7 +12,6 @@ from urllib.parse import urlparse, parse_qs
 import multiprocessing
 from time import sleep
 from zeroconf import ServiceInfo, Zeroconf
-
 from pymobiledevice3.remote.common import TunnelProtocol
 from pymobiledevice3.exceptions import AlreadyMountedError
 from pymobiledevice3.usbmux import select_devices_by_connection_type
@@ -21,9 +20,9 @@ from pymobiledevice3.services.installation_proxy import InstallationProxyService
 from pymobiledevice3.services.mobile_image_mounter import auto_mount_personalized
 from pymobiledevice3.services.dvt.instruments.process_control import ProcessControl
 from pymobiledevice3.services.dvt.dvt_secure_socket_proxy import DvtSecureSocketProxyService
-from pymobiledevice3.tunneld import get_tunneld_devices, TUNNELD_DEFAULT_ADDRESS, TunneldRunner
+from pymobiledevice3.tunneld.server import TunneldRunner
+from pymobiledevice3.tunneld.api import TUNNELD_DEFAULT_ADDRESS, async_get_tunneld_devices
 from pymobiledevice3.common import get_home_folder
-
 from pymobiledevice3._version import __version__ as pymd_ver
 from JitStreamer._version import __version__
 
@@ -121,15 +120,18 @@ class Device:
     def asdict(self):
         return {self.name: [a.asdict() for a in self.apps]}
 
-def refresh_devs():
+async def refresh_devs():
     global devs
     devs = []
-    for dev in get_tunneld_devices():
+    for dev in await async_get_tunneld_devices():
         try:
+            logging.warning("Starting async task for auto mount")
             asyncio.run(auto_mount_personalized(dev))
         except AlreadyMountedError:
+            logging.warning("Already mounted")
             pass
         devs.append(Device(dev, dev.name, dev.udid, []).refresh_apps())
+        logging.warning("Appending dev")
 
 def get_device(udid: str):
     global devs
