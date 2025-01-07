@@ -123,10 +123,11 @@ class Device:
 async def refresh_devs():
     global devs
     devs = []
-    for dev in await async_get_tunneld_devices():
+    devs_list = await async_get_tunneld_devices()
+    for dev in devs_list:
         try:
             logging.warning("Starting async task for auto mount")
-            asyncio.run(auto_mount_personalized(dev))
+            await auto_mount_personalized(dev)
         except AlreadyMountedError:
             logging.warning("Already mounted")
             pass
@@ -158,7 +159,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             case ['ver']:
                 response = {"pymobiledevice3": pymd_ver, "SideJITServer": __version__}
             case ['re']:
-                refresh_devs()
+                asyncio.run(refresh_devs())
                 response = {"OK": "Refreshed!"}
             case [device_id] if device := get_device(device_id):
                 response = [a.asdict() for a in device.apps]
@@ -331,3 +332,4 @@ def start_server(verbose, timeout, port, debug, pair, version, tunnel):
     except KeyboardInterrupt:
         print("Server stopped.")
     
+
