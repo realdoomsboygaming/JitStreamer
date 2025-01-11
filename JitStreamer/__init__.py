@@ -8,7 +8,7 @@ import logging
 import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
-
+import requests
 import multiprocessing
 from time import sleep
 from zeroconf import ServiceInfo, Zeroconf
@@ -120,14 +120,14 @@ class Device:
     def asdict(self):
         return {self.name: [a.asdict() for a in self.apps]}
 
-async def refresh_devs():
+def refresh_devs():
     global devs
     devs = []
-    devs_list = await async_get_tunneld_devices()
+    devs_list = asyncio.run(async_get_tunneld_devices())
     for dev in devs_list:
         try:
             logging.warning("Starting async task for auto mount")
-            await auto_mount_personalized(dev)
+            asyncio.run(auto_mount_personalized(dev))
         except AlreadyMountedError:
             logging.warning("Already mounted")
             pass
@@ -159,7 +159,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             case ['ver']:
                 response = {"pymobiledevice3": pymd_ver, "SideJITServer": __version__}
             case ['re']:
-                asyncio.run(refresh_devs())
+                refresh_devs()
                 response = {"OK": "Refreshed!"}
             case [device_id] if device := get_device(device_id):
                 response = [a.asdict() for a in device.apps]
@@ -210,6 +210,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     self.end_headers()
                     response = f"File '{udid}'.plist received successfully"
                     self.wfile.write(response.encode())
+                    if 'ip' in form:
+                        with open(".jitstreamer_device_info", 'w') as file:
+                            json.dump({'ip': form['ip'].value, "udid": udid}, file)
                 else:
                     # If the file field was empty
                     self.send_error(400, "No file was uploaded")
@@ -318,7 +321,16 @@ def start_server(verbose, timeout, port, debug, pair, version, tunnel):
         tunneld = multiprocessing.Process(target=start_tunneld_proc)
         tunneld.start()
         sleep(timeout)
-
+    try:
+        with open(".jitstreamer_device_info", "r") as f:
+            
+            info = json.load(f)
+            
+            params = {"ip": info['ip'], "udid": info['udid'], "connection_type": "usbmux-tcp"}
+            r = requests.get('http://0.0.0.0:49151/start-tunnel', params=params)
+            print(requests.get("http://0.0.0.0:49151").text)
+    except FileNotFoundError:
+        pass
     refresh_devs()
 
     create_service(port)

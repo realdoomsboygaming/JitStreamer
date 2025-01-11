@@ -170,3 +170,5 @@ cython_debug/
 *.dist
 *.onefile_dist
 *compilation-report.xml
+
+.jitstreamer_device_info
