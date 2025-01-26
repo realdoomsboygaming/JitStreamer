@@ -320,17 +320,28 @@ def start_server(verbose, timeout, port, debug, pair, version, tunnel):
     if not tunnel:
         tunneld = multiprocessing.Process(target=start_tunneld_proc)
         tunneld.start()
-        sleep(timeout)
+        
+        # Retry mechanism to wait for tunneld to start
+        max_retries = 5
+        for _ in range(max_retries):
+            try:
+                requests.get('http://127.0.0.1:49151', timeout=2)
+                break
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+                sleep(2)
+        else:
+            click.echo("Error: Tunneld service failed to start!")
+            return
+
     try:
         with open(".jitstreamer_device_info", "r") as f:
-            
             info = json.load(f)
-            
             params = {"ip": info['ip'], "udid": info['udid'], "connection_type": "usbmux-tcp"}
             r = requests.get('http://0.0.0.0:49151/start-tunnel', params=params)
             print(requests.get("http://0.0.0.0:49151").text)
     except FileNotFoundError:
         pass
+
     refresh_devs()
 
     create_service(port)
